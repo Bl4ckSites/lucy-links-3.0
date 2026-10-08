@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Lucy | Links Oficiais</title>
+  <meta name="description" content="Conteúdos exclusivos e promoções especiais.">
+  <link rel="stylesheet" href="/style.css">
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+</head>
+<body>
+  <main class="page">
+    
+    <!-- Hero Section -->
+    <header class="hero">
+      <img src="/imgs/hero-bg.avif" alt="Lucy" class="hero-image" onerror="this.style.background='linear-gradient(135deg, #FF861B, #E94B00)'">
+      <div class="name-block">
+        <h1 class="name-top">LUCY</h1>
+        <div class="name-pill">EXCLUSIVO</div>
+      </div>
+    </header>
+
+    <!-- Avatar Sobreposto -->
+    <div class="avatar-wrapper">
+      <img src="/imgs/avatar.avif" alt="Foto de Perfil" class="profile-photo" onerror="this.style.background='#ddd'">
+    </div>
+
+    <!-- Área de Links -->
+    <section class="links-area">
+      
+      <!-- Card 1: Destaque -->
+      <div class="featured-wrapper">
+        <div class="featured-badge">MAIS ESCOLHIDO</div>
+        <button class="link-card featured-card" data-key="fatal-fans" disabled aria-label="Oferta Especial">
+          <div class="card-icon">
+            <img src="/imgs/icon-fatal.avif" alt="Ícone Oferta">
+          </div>
+          <div class="card-content">
+            <span class="card-price">APENAS R$ 4,95 HOJE!</span>
+            <span class="card-coupon">FATALFANSKEROLAY50</span>
+          </div>
+        </button>
+      </div>
+
+      <!-- Card 2: Chat -->
+      <button class="link-card" data-key="chat-privado" disabled aria-label="Chat Exclusivo">
+        <div class="card-icon">
+          <img src="/imgs/icon-chat.avif" alt="Ícone Chat">
+        </div>
+        <span class="card-label">80% OFF Converse Comigo</span>
+      </button>
+
+      <!-- Card 3: Grupo -->
+      <button class="link-card" data-key="grupo-vip" disabled aria-label="Grupo VIP">
+        <div class="card-icon">
+          <img src="/imgs/icon-grupo.avif" alt="Ícone Grupo">
+        </div>
+        <span class="card-label">55% OFF - Apenas 5 vagas!</span>
+      </button>
+
+      <!-- Card 4: Premium -->
+      <button class="link-card" data-key="conteudo-premium" disabled aria-label="Conteúdo Premium">
+        <div class="card-icon">
+          <img src="/imgs/icon-premium.avif" alt="Ícone Premium">
+        </div>
+        <span class="card-label">50% OFF - Apenas 2 vagas!</span>
+      </button>
+
+      <!-- HONEYPOT (Isca para bots - invisível) -->
+      <button class="link-card honeypot" data-key="admin-883" disabled tabindex="-1" aria-hidden="true" style="position:absolute; opacity:0; pointer-events:none; height:1px;">
+        <span>ADMIN</span>
+      </button>
+
+      <!-- Verificação Turnstile -->
+      <div id="verification-container" style="margin-top: 30px; display: flex; justify-content: center;">
+        <div class="cf-turnstile" 
+             data-sitekey="0x4AAAAAAAPUBLIC_KEY_AQUI" 
+             data-callback="onTurnstileSuccess" 
+             data-theme="light">
+        </div>
+      </div>
+
+      <p id="status-msg" style="text-align: center; color: #E94B00; font-size: 14px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s;"></p>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <p>© 2026 Lucy. Todos os direitos reservados.</p>
+    </footer>
+
+    <!-- Decorações de Fundo -->
+    <div class="decorations">
+      <svg class="decoration crown" style="top: 25%; right: -20px;" viewBox="0 0 100 100" fill="currentColor"><path d="M10,70 L25,30 L40,60 L50,20 L60,60 L75,30 L90,70 Z"/></svg>
+      <svg class="decoration heart" style="bottom: 10%; left: -10px;" viewBox="0 0 100 100" fill="currentColor"><path d="M50,85 C20,60 5,40 5,25 C5,10 20,5 35,5 C42,5 50,10 50,10 C50,10 58,5 65,5 C80,5 95,10 95,25 C95,40 80,60 50,85 Z"/></svg>
+    </div>
+  </main>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
