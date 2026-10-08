@@ -4,5 +4,5 @@ pages_build_output_dir = "public"
 
 # O ID do KV será preenchido depois que você criar no painel da Cloudflare
 kv_namespaces = [
-  { binding = "SECURITY_KV", id = "SUBSTITUA_PELO_ID_DO_SEU_KV" }
+  { binding = "SECURITY_KV", id = "4c5ac87273104311bb6745325dd10ae2" }
 ]
