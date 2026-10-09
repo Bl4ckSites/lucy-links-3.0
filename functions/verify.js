@@ -1,8 +1,8 @@
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
-// Sessão longa: usuário não precisa revalidar Turnstile toda vez que volta
-const SESSION_TTL_SECONDS = 60 * 60 * 24 * 30; // 30 dias
-const TURNSTILE_TIMEOUT_MS = 5000;
+// SESSÃO DE 10 MINUTOS (600 segundos)
+const SESSION_TTL_SECONDS = 600; 
+const TURNSTILE_TIMEOUT_MS = 3000; // Falha rápida em 3s se a API demorar, em vez de travar por 5s
 
 function jsonResponse(body, status, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
@@ -19,14 +19,7 @@ export async function onRequestPost(context) {
   const { request, env } = context;
   const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
 
-  // Verificação de configuração antes de qualquer trabalho
-  if (!env.TURNSTILE_SECRET) {
-    console.error('TURNSTILE_SECRET ausente no ambiente');
-    return jsonResponse({ success: false, error: 'server_misconfigured' }, 500);
-  }
-
-  if (!env.SECURITY_KV) {
-    console.error('SECURITY_KV ausente no ambiente');
+  if (!env.TURNSTILE_SECRET || !env.SECURITY_KV) {
     return jsonResponse({ success: false, error: 'server_misconfigured' }, 500);
   }
 
@@ -42,7 +35,7 @@ export async function onRequestPost(context) {
     return jsonResponse({ success: false, error: 'missing_token' }, 400);
   }
 
-  // Validação no Turnstile com timeout (evita request travado)
+  // Validação no Turnstile com timeout otimizado
   let data;
   try {
     const formData = new FormData();
@@ -71,41 +64,24 @@ export async function onRequestPost(context) {
   }
 
   if (!data || data.success !== true) {
-    return jsonResponse(
-      {
-        success: false,
-        error: 'invalid_token',
-        codes: data?.['error-codes'] || []
-      },
-      403
-    );
+    return jsonResponse({ success: false, error: 'invalid_token', codes: data?.['error-codes'] || [] }, 403);
   }
 
-  // Token válido: cria sessão persistente no KV
+  // Token válido: cria sessão de 10 minutos no KV
   try {
     const sessionToken = crypto.randomUUID();
     const now = Math.floor(Date.now() / 1000);
 
-    // Guarda contexto útil para debug e para regras futuras no /go/:key
     await env.SECURITY_KV.put(
       `session:${sessionToken}`,
-      JSON.stringify({
-        ip,
-        createdAt: now,
-        expiresAt: now + SESSION_TTL_SECONDS
-      }),
+      JSON.stringify({ ip, createdAt: now, expiresAt: now + SESSION_TTL_SECONDS }),
       { expirationTtl: SESSION_TTL_SECONDS }
     );
 
     return jsonResponse(
-      {
-        success: true,
-        expiresIn: SESSION_TTL_SECONDS,
-        exp: now + SESSION_TTL_SECONDS
-      },
+      { success: true, expiresIn: SESSION_TTL_SECONDS },
       200,
       {
-        // Max-Age alinhado com o TTL do KV: quando o cookie expira, o KV também já expirou
         'Set-Cookie': `lucy_session=${sessionToken}; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_TTL_SECONDS}; Path=/`
       }
     );
