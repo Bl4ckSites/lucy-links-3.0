@@ -1,8 +1,8 @@
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 
 // SESSÃO DE 10 MINUTOS (600 segundos)
-const SESSION_TTL_SECONDS = 600; 
-const TURNSTILE_TIMEOUT_MS = 3000; // Falha rápida em 3s se a API demorar, em vez de travar por 5s
+const SESSION_TTL_SECONDS = 600;
+const TURNSTILE_TIMEOUT_MS = 3000;
 
 function jsonResponse(body, status, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
@@ -35,7 +35,6 @@ export async function onRequestPost(context) {
     return jsonResponse({ success: false, error: 'missing_token' }, 400);
   }
 
-  // Validação no Turnstile com timeout otimizado
   let data;
   try {
     const formData = new FormData();
@@ -67,7 +66,6 @@ export async function onRequestPost(context) {
     return jsonResponse({ success: false, error: 'invalid_token', codes: data?.['error-codes'] || [] }, 403);
   }
 
-  // Token válido: cria sessão de 10 minutos no KV
   try {
     const sessionToken = crypto.randomUUID();
     const now = Math.floor(Date.now() / 1000);
