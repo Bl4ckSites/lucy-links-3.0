@@ -28,42 +28,65 @@
     <!-- Área de Links -->
     <section class="links-area">
       
-      <!-- Card 1: Destaque -->
+      <!-- Card 1: Destaque (Prévias Grátis - Telegram) -->
       <div class="featured-wrapper">
         <div class="featured-badge">MAIS ESCOLHIDO</div>
-        <button class="link-card featured-card" data-key="fatal-fans" disabled aria-label="Oferta Especial">
-          <div class="card-icon">
-            <img src="/imgs/icon-fatal.avif" alt="Ícone Oferta">
+        <button class="link-card featured-card" data-key="previas-gratis" disabled aria-label="Prévias grátis">
+          <div class="link-icon">
+            <!-- Ícone Telegram (avião de papel) -->
+            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="#E94B00"/>
+            </svg>
           </div>
           <div class="card-content">
-            <span class="card-price">APENAS R$ 4,95 HOJE!</span>
-            <span class="card-coupon">FATALFANSKEROLAY50</span>
+            <span class="card-price">PRÉVIAS GRÁTIS</span>
+            <span class="card-coupon">Acesse agora</span>
           </div>
         </button>
       </div>
 
-      <!-- Card 2: Chat -->
-      <button class="link-card" data-key="chat-privado" disabled aria-label="Chat Exclusivo">
-        <div class="card-icon">
-          <img src="/imgs/icon-chat.avif" alt="Ícone Chat">
+      <!-- Card 2: Privacy Grátis -->
+      <button class="link-card" data-key="privacy-gratis" disabled aria-label="Privacy Grátis">
+        <div class="link-icon">
+          <!-- Ícone Privacy (cadeado) -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z" fill="#E94B00"/>
+          </svg>
         </div>
-        <span class="card-label">80% OFF Converse Comigo</span>
+        <span class="card-label">PRIVACY GRÁTIS</span>
       </button>
 
-      <!-- Card 3: Grupo -->
-      <button class="link-card" data-key="grupo-vip" disabled aria-label="Grupo VIP">
-        <div class="card-icon">
-          <img src="/imgs/icon-grupo.avif" alt="Ícone Grupo">
+      <!-- Card 3: Privacy VIP -->
+      <button class="link-card" data-key="privacy-vip" disabled aria-label="Privacy VIP">
+        <div class="link-icon">
+          <!-- Ícone VIP (coroa/estrela) -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#E94B00"/>
+          </svg>
         </div>
-        <span class="card-label">55% OFF - Apenas 5 vagas!</span>
+        <span class="card-label">PRIVACY VIP</span>
       </button>
 
-      <!-- Card 4: Premium -->
-      <button class="link-card" data-key="conteudo-premium" disabled aria-label="Conteúdo Premium">
-        <div class="card-icon">
-          <img src="/imgs/icon-premium.avif" alt="Ícone Premium">
+      <!-- Card 4: Telegram VIP -->
+      <button class="link-card" data-key="telegram-vip" disabled aria-label="Telegram VIP">
+        <div class="link-icon">
+          <!-- Ícone Telegram Bot (robô/engrenagem) -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="#E94B00"/>
+          </svg>
         </div>
-        <span class="card-label">50% OFF - Apenas 2 vagas!</span>
+        <span class="card-label">TELEGRAM VIP</span>
+      </button>
+
+      <!-- Card 5: Contos Exclusivos -->
+      <button class="link-card" data-key="contos-exclusivos" disabled aria-label="Contos Exclusivos">
+        <div class="link-icon">
+          <!-- Ícone Contos (livro aberto) -->
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z" fill="#E94B00"/>
+          </svg>
+        </div>
+        <span class="card-label">CONTOS EXCLUSIVOS</span>
       </button>
 
       <!-- HONEYPOT (Isca para bots - invisível) -->
@@ -71,13 +94,13 @@
         <span>ADMIN</span>
       </button>
 
-     <!-- Verificação Turnstile -->
-<div id="verification-container" style="margin-top: 30px; display: flex; justify-content: center;">
-  <div class="cf-turnstile" 
-       data-sitekey="0x4AAAAAAFRzUH_VDaTuVUZl" 
-       data-callback="onTurnstileSuccess" 
-       data-theme="light">
-  </div>
+      <!-- Verificação Turnstile -->
+      <div id="verification-container" style="margin-top: 30px; display: flex; justify-content: center;">
+        <div class="cf-turnstile" 
+             data-sitekey="0x4AAAAAAFRzUH_VDaTuVUZl" 
+             data-callback="onTurnstileSuccess" 
+             data-theme="light">
+        </div>
       </div>
 
       <p id="status-msg" style="text-align: center; color: #E94B00; font-size: 14px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s;"></p>
