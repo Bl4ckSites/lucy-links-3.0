@@ -1,8 +1,10 @@
+// MAPA DE LINKS — Chaves alinhadas com o index.html (Spec Técnica Seção 23)
 const LINKS = {
-  "fatal-fans": "https://t.me/+PpgYUi67ciNiYzU5",
-  "chat-privado": "https://privacy.com.br/@Lucylimagratis",
-  "grupo-vip": "https://t.me/Lucydopriv_bot",
-  "conteudo-premium": "https://privacy.com.br/@Lucysafadinha"
+  "previas-gratis": "https://t.me/+PpgYUi67ciNiYzU5",
+  "privacy-gratis": "https://privacy.com.br/@Lucylimagratis",
+  "privacy-vip": "https://privacy.com.br/@Lucysafadinha",
+  "telegram-vip": "https://t.me/Lucydopriv_bot",
+  "contos-exclusivos": "https://www.casadoscontos.com.br/perfil/308907"
 };
 
 const HONEYPOT_KEY = 'admin-883';
@@ -56,9 +58,10 @@ export async function onRequestGet(context) {
   // 5. Redirect
   const finalUrl = LINKS[key];
   if (finalUrl) {
-    console.log(`[DEBUG] Redirecionando ${key}`);
+    console.log(`[DEBUG] Redirecionando ${key} -> ${finalUrl}`);
     return redirect(finalUrl);
   }
 
+  console.log(`[DEBUG] Chave não encontrada: ${key}`);
   return text('Not Found', 404);
 }
