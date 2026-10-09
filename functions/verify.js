@@ -25,13 +25,14 @@ export async function onRequestPost(context) {
         status: 200,
         headers: {
           'Content-Type': 'application/json',
-          'Set-Cookie': `kerolay_session=${sessionToken}; HttpOnly; Secure; SameSite=Lax; Max-Age=1800; Path=/`
+          'Set-Cookie': `lucy_session=${sessionToken}; HttpOnly; Secure; SameSite=Lax; Max-Age=1800; Path=/`
         }
       });
     }
 
-    return new Response(JSON.stringify({ success: false }), { status: 403, headers: { 'Content-Type': 'application/json' } });
+    return new Response(JSON.stringify({ success: false, error: data['error-codes'] }), { status: 403, headers: { 'Content-Type': 'application/json' } });
   } catch (err) {
+    console.error('Erro na verificação:', err);
     return new Response('Erro interno', { status: 500 });
   }
 }
