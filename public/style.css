@@ -1,9 +1,10 @@
 /* =============================================================
-   LUCY LINKS — style.css (v2 - Premium Polish)
+   LUCY LINKS — style.css (v3 - Premium Polish + Discount Badges)
    - Avatar maior e mais alto (destaque)
    - Cards mais compactos (mais conteúdo visível)
-   - Micro-interações refinadas
-   - Suporte a prefers-reduced-motion
+   - Badges de desconto centralizados e flutuantes
+   - Status message em pílula centralizada
+   - Sem inline styles (migrados para cá)
    - Compatível com WebView do Instagram
    ============================================================= */
 
@@ -246,10 +247,56 @@ button {
   box-shadow: var(--shadow-badge);
   z-index: var(--z-badge);
   animation: badgePulse 2.6s var(--ease-out) 1.2s infinite;
+  white-space: nowrap;
 }
 
 /* ============================================================
-   9. CARDS BASE (MAIS COMPACTOS)
+   9. CARD WRAPPER + BADGE DE DESCONTO (NOVO)
+   ============================================================ */
+.card-wrapper {
+  position: relative;
+  margin-bottom: 22px;
+  padding-top: 14px;
+}
+
+/* A margem agora é do wrapper, não do botão */
+.card-wrapper > .link-card {
+  margin-bottom: 0;
+}
+
+.discount-badge {
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--white);
+  color: var(--orange-dark);
+  padding: 6px 18px;
+  border-radius: var(--radius-pill);
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  z-index: var(--z-badge);
+  box-shadow:
+    0 4px 12px rgba(232, 74, 28, 0.22),
+    0 0 0 3px rgba(255, 245, 235, 0.9);
+  animation: badgeFloat 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+/* Variação: 50% OFF mais chamativo (dourado) */
+.card-wrapper:has(.link-card[data-key="fatal-fans"]) .discount-badge {
+  background: linear-gradient(135deg, #FFD166 0%, #FF9A2E 100%);
+  color: #7A2A00;
+  box-shadow:
+    0 6px 16px rgba(255, 154, 46, 0.45),
+    0 0 0 3px rgba(255, 245, 235, 0.9);
+}
+
+/* ============================================================
+   10. CARDS BASE (MAIS COMPACTOS)
    ============================================================ */
 .link-card {
   width: 100%;
@@ -298,7 +345,7 @@ button {
 }
 
 /* ============================================================
-   10. CARD DESTAQUE (FEATURED)
+   11. CARD DESTAQUE (FEATURED)
    ============================================================ */
 .featured-card {
   position: relative;
@@ -323,7 +370,7 @@ button {
 }
 
 /* ============================================================
-   11. ÍCONE DO CARD (SUPORTA SVG E IMG)
+   12. ÍCONE DO CARD (SUPORTA SVG E IMG)
    ============================================================ */
 .card-icon {
   flex: 0 0 54px; /* reduzido de 60 → 54 */
@@ -353,7 +400,7 @@ button {
 }
 
 /* ============================================================
-   12. CONTEÚDO DO CARD
+   13. CONTEÚDO DO CARD
    ============================================================ */
 .card-content {
   flex: 1;
@@ -387,7 +434,45 @@ button {
 }
 
 /* ============================================================
-   13. FOOTER
+   14. VERIFICATION CONTAINER (Turnstile)
+   ============================================================ */
+#verification-container {
+  margin-top: 30px;
+  display: flex;
+  justify-content: center;
+}
+
+/* ============================================================
+   15. STATUS MESSAGE (pílula centralizada)
+   ============================================================ */
+#status-msg {
+  display: block;
+  max-width: fit-content;
+  margin: 15px auto 0;
+  padding: 8px 18px;
+  border-radius: var(--radius-pill);
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  color: var(--orange-dark);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 4px 12px rgba(232, 74, 28, 0.12);
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity var(--t-med) var(--ease-out),
+    transform var(--t-med) var(--ease-out);
+  pointer-events: none;
+}
+
+#status-msg:not(:empty) {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============================================================
+   16. FOOTER
    ============================================================ */
 .footer {
   text-align: center;
@@ -399,7 +484,7 @@ button {
 }
 
 /* ============================================================
-   14. DECORAÇÕES DE FUNDO
+   17. DECORAÇÕES DE FUNDO
    ============================================================ */
 .decorations {
   position: absolute;
@@ -435,7 +520,7 @@ button {
 }
 
 /* ============================================================
-   15. RESPONSIVO — TELAS PEQUENAS (≤380px)
+   18. RESPONSIVO — TELAS PEQUENAS (≤380px)
    ============================================================ */
 @media (max-width: 380px) {
   .links-area {
@@ -469,10 +554,21 @@ button {
   .avatar-wrapper {
     margin-top: -72px; /* proporcional à tela pequena */
   }
+
+  .discount-badge {
+    top: -2px;
+    padding: 5px 14px;
+    font-size: 11px;
+  }
+
+  #status-msg {
+    font-size: 12px;
+    padding: 6px 14px;
+  }
 }
 
 /* ============================================================
-   16. ACESSIBILIDADE — PREFERS-REDUCED-MOTION
+   19. ACESSIBILIDADE — PREFERS-REDUCED-MOTION
    ============================================================ */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -492,10 +588,14 @@ button {
   .heart {
     animation: none;
   }
+
+  .discount-badge {
+    animation: none;
+  }
 }
 
 /* ============================================================
-   17. KEYFRAMES
+   20. KEYFRAMES
    ============================================================ */
 
 /* Entrada suave de baixo para cima (cards) */
@@ -550,7 +650,7 @@ button {
   50%      { transform: translateY(-12px) rotate(2deg); }
 }
 
-/* Pulso de atenção (badge) */
+/* Pulso de atenção (badge destaque) */
 @keyframes badgePulse {
   0%, 100% {
     transform: translateX(-50%) scale(1);
@@ -560,6 +660,12 @@ button {
     transform: translateX(-50%) scale(1.05);
     box-shadow: var(--shadow-badge-glow);
   }
+}
+
+/* Flutuação suave (badges de desconto) */
+@keyframes badgeFloat {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%      { transform: translateX(-50%) translateY(-3px); }
 }
 
 /* Shimmer (card destaque) */
