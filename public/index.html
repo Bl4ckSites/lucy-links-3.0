@@ -36,26 +36,56 @@
 <body>
   <main class="page">
 
+    <!-- ============================================================
+         HERO — imagem de capa + nome
+         ============================================================ -->
     <header class="hero">
-      <img src="/imgs/hero-bg.avif" alt="Lucy" class="hero-image" onerror="this.style.background='linear-gradient(135deg, #FF861B, #E94B00)'">
+      <img src="/imgs/hero-bg.avif"
+           alt="Lucy"
+           class="hero-image"
+           onerror="this.style.background='linear-gradient(135deg, #FF861B, #E94B00)'">
       <div class="name-block">
         <h1 class="name-top">LUCY</h1>
         <div class="name-pill">EXCLUSIVO</div>
       </div>
     </header>
 
+    <!-- ============================================================
+         AVATAR SOBREPOSTO
+         ============================================================ -->
     <div class="avatar-wrapper">
-      <img src="/imgs/avatar.avif" alt="Foto de Perfil de Lucy" class="profile-photo" onerror="this.style.background='#ddd'">
+      <img src="/imgs/avatar.avif"
+           alt="Foto de Perfil de Lucy"
+           class="profile-photo"
+           onerror="this.style.background='#ddd'">
     </div>
 
+    <!-- ============================================================
+         ÁREA DE LINKS
+         ============================================================ -->
     <section class="links-area">
 
+      <!-- ========================================================
+           CARD DESTAQUE: PRÉVIAS GRÁTIS
+           ======================================================== -->
       <div class="featured-wrapper">
         <div class="featured-badge">MAIS ESCOLHIDO</div>
-        <button class="link-card featured-card" data-key="previas-gratis" disabled aria-label="Prévias grátis">
+        <button class="link-card featured-card"
+                data-key="previas-gratis"
+                disabled
+                aria-label="Prévias grátis">
           <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="#E94B00"/>
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gEye" x1="4" y1="24" x2="44" y2="24" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FF9A2E"/>
+                  <stop offset="1" stop-color="#E84A1C"/>
+                </linearGradient>
+              </defs>
+              <path d="M24 12C13 12 4 24 4 24s9 12 20 12 20-12 20-12S35 12 24 12z" fill="url(#gEye)"/>
+              <circle cx="24" cy="24" r="8" fill="#FFFFFF"/>
+              <circle cx="24" cy="24" r="4.5" fill="#E84A1C"/>
+              <circle cx="22" cy="22" r="1.8" fill="#FFFFFF" opacity="0.95"/>
             </svg>
           </div>
           <div class="card-content">
@@ -65,42 +95,89 @@
         </button>
       </div>
 
-      <button class="link-card" data-key="privacy-gratis" disabled aria-label="Privacy grátis">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill="#E94B00"/>
-          </svg>
-        </div>
-        <span class="card-label">PRIVACY GRÁTIS</span>
-      </button>
+      <!-- ========================================================
+           CARD: PRIVACY VIP — 40% OFF
+           ======================================================== -->
+      <div class="card-wrapper">
+        <div class="discount-badge">40% OFF</div>
+        <button class="link-card"
+                data-key="privacy-vip"
+                disabled
+                aria-label="Privacy VIP - 40% de desconto">
+          <div class="card-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gCrown" x1="24" y1="8" x2="24" y2="40" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FF9A2E"/>
+                  <stop offset="1" stop-color="#E84A1C"/>
+                </linearGradient>
+              </defs>
+              <path d="M6 36l2.5-24 9.5 8L24 8l6 12 9.5-8L42 36H6z" fill="url(#gCrown)"/>
+              <rect x="6" y="36" width="36" height="5" rx="1.5" fill="#C93A14"/>
+              <circle cx="8.5" cy="13" r="2.4" fill="#FFFFFF"/>
+              <circle cx="24" cy="8" r="2.4" fill="#FFFFFF"/>
+              <circle cx="39.5" cy="13" r="2.4" fill="#FFFFFF"/>
+              <circle cx="24" cy="22" r="2" fill="#FFFFFF" opacity="0.9"/>
+            </svg>
+          </div>
+          <span class="card-label">PRIVACY VIP</span>
+        </button>
+      </div>
 
-      <button class="link-card" data-key="privacy-vip" disabled aria-label="Privacy VIP">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#E94B00"/>
-          </svg>
-        </div>
-        <span class="card-label">PRIVACY VIP</span>
-      </button>
+      <!-- ========================================================
+           CARD: FATAL FANS — 50% OFF
+           ======================================================== -->
+      <div class="card-wrapper">
+        <div class="discount-badge">50% OFF</div>
+        <button class="link-card"
+                data-key="fatal-fans"
+                disabled
+                aria-label="Fatal Fans - 50% de desconto">
+          <div class="card-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gFlame" x1="24" y1="6" x2="24" y2="42" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FF9A2E"/>
+                  <stop offset="1" stop-color="#E84A1C"/>
+                </linearGradient>
+              </defs>
+              <path d="M24 4C20 12 12 16 12 26c0 8 5 16 12 16s12-8 12-16c0-4-2-7-4-10-1 3-3 5-5 5 2-5 1-13-3-17z" fill="url(#gFlame)"/>
+              <path d="M24 22c-2 4-6 6-6 11 0 4 3 7 6 7s6-3 6-7c0-5-4-7-6-11z" fill="#FFFFFF" opacity="0.85"/>
+            </svg>
+          </div>
+          <span class="card-label">FATAL FANS</span>
+        </button>
+      </div>
 
-      <button class="link-card" data-key="telegram-vip" disabled aria-label="Telegram VIP">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm8.94 3A9 9 0 0012 3.06V1h-1v2.06A9 9 0 003.06 11H1v1h2.06A9 9 0 0011 20.94V23h1v-2.06A9 9 0 0020.94 12H23v-1h-2.06zM12 19a7 7 0 110-14 7 7 0 010 14z" fill="#E94B00"/>
-          </svg>
-        </div>
-        <span class="card-label">TELEGRAM VIP</span>
-      </button>
+      <!-- ========================================================
+           CARD: TELEGRAM VIP — 25% OFF
+           ======================================================== -->
+      <div class="card-wrapper">
+        <div class="discount-badge">25% OFF</div>
+        <button class="link-card"
+                data-key="telegram-vip"
+                disabled
+                aria-label="Telegram VIP - 25% de desconto">
+          <div class="card-icon">
+            <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="gTG" x1="6" y1="6" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+                  <stop stop-color="#FF9A2E"/>
+                  <stop offset="1" stop-color="#E84A1C"/>
+                </linearGradient>
+              </defs>
+              <circle cx="24" cy="24" r="20" fill="url(#gTG)"/>
+              <path d="M35.3 13.2L10.6 22.5c-1.4.5-1.4 2.5 0 3l5.6 2 2.1 6.6c.4 1.4 2.3 1.6 3 .3l2.8-5 5.9 4.3c1 .7 2.5.2 2.7-1.1l3.5-21.4c.2-1.3-1.1-2.4-2.4-2z" fill="#FFFFFF"/>
+            </svg>
+          </div>
+          <span class="card-label">TELEGRAM VIP</span>
+        </button>
+      </div>
 
-      <button class="link-card" data-key="contos-exclusivos" disabled aria-label="Contos exclusivos">
-        <div class="card-icon">
-          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z" fill="#E94B00"/>
-          </svg>
-        </div>
-        <span class="card-label">CONTOS EXCLUSIVOS</span>
-      </button>
-      <div id="verification-container" style="margin-top: 30px; display: flex; justify-content: center;">
+      <!-- ========================================================
+           TURNSTILE — verificação humana
+           ======================================================== -->
+      <div id="verification-container">
         <div class="cf-turnstile"
              data-sitekey="0x4AAAAAAFRzUH_VDaTuVUZl"
              data-callback="onTurnstileSuccess"
@@ -108,19 +185,34 @@
         </div>
       </div>
 
-      <p id="status-msg" style="text-align:center; margin-top:15px; font-size:14px; opacity:0; transition: opacity .3s ease;"></p>
+      <!-- ========================================================
+           MENSAGEM DE STATUS
+           ======================================================== -->
+      <p id="status-msg"></p>
 
     </section>
 
+    <!-- ============================================================
+         FOOTER
+         ============================================================ -->
     <footer class="footer">
       <p>© 2026 Lucy. Todos os direitos reservados.</p>
     </footer>
 
+    <!-- ============================================================
+         DECORAÇÕES DE FUNDO
+         ============================================================ -->
     <div class="decorations">
-      <svg class="decoration crown" style="top: 25%; right: -20px;" viewBox="0 0 100 100" fill="currentColor">
+      <svg class="decoration crown"
+           style="top: 25%; right: -20px;"
+           viewBox="0 0 100 100"
+           fill="currentColor">
         <path d="M10,70 L25,30 L40,60 L50,20 L60,60 L75,30 L90,70 Z"/>
       </svg>
-      <svg class="decoration heart" style="bottom: 10%; left: -10px;" viewBox="0 0 100 100" fill="currentColor">
+      <svg class="decoration heart"
+           style="bottom: 10%; left: -10px;"
+           viewBox="0 0 100 100"
+           fill="currentColor">
         <path d="M50,85 C20,60 5,40 5,25 C5,10 20,5 35,5 C42,5 50,10 50,10 C50,10 58,5 65,5 C80,5 95,10 95,25 C95,40 80,60 50,85 Z"/>
       </svg>
     </div>
