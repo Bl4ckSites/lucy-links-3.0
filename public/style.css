@@ -1,143 +1,569 @@
+/* =============================================================
+   LUCY LINKS — style.css (v2 - Premium Polish)
+   - Avatar maior e mais alto (destaque)
+   - Cards mais compactos (mais conteúdo visível)
+   - Micro-interações refinadas
+   - Suporte a prefers-reduced-motion
+   - Compatível com WebView do Instagram
+   ============================================================= */
+
+/* ============================================================
+   1. TOKENS DE DESIGN
+   ============================================================ */
 :root {
+  /* Cores */
   --bg: #FFF5EB;
   --orange: #F26522;
   --orange-light: #FF8A1A;
   --orange-dark: #E84A1C;
   --white: #FFFFFF;
   --text-dark: #242424;
-  --shadow: rgba(242, 101, 34, 0.25);
+  --text-muted: #999999;
+  --decor: #E9B87E;
+
+  /* Gradientes */
+  --gradient-orange: linear-gradient(105deg,
+    var(--orange-light) 0%,
+    var(--orange) 50%,
+    var(--orange-dark) 100%);
+
+  /* Sombras */
+  --shadow-sm:       0 3px 10px rgba(0, 0, 0, 0.10);
+  --shadow-name:     0 3px 6px rgba(0, 0, 0, 0.40);
+  --shadow-badge:    0 4px 14px rgba(0, 0, 0, 0.14);
+  --shadow-badge-glow: 0 6px 20px rgba(242, 101, 34, 0.35);
+  --shadow-avatar:
+    0 0 0 4px var(--white),
+    0 14px 28px rgba(232, 74, 28, 0.22),
+    0 6px 14px rgba(0, 0, 0, 0.08);
+  --shadow-card:
+    0 8px 20px rgba(242, 101, 34, 0.25),
+    0 0 25px rgba(255, 154, 72, 0.18);
+  --shadow-card-hover:
+    0 14px 30px rgba(242, 101, 34, 0.32),
+    0 0 32px rgba(255, 154, 72, 0.28);
+
+  /* Raios */
+  --radius-pill: 999px;
+  --radius-card: 64px;
+
+  /* Easing */
+  --ease-out:  cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Tempos */
+  --t-fast:  180ms;
+  --t-med:   320ms;
+  --t-slow:  620ms;
+  --t-ambient: 7000ms;
+
+  /* Z-index */
+  --z-decor:   0;
+  --z-content: 2;
+  --z-name:    3;
+  --z-avatar:  5;
+  --z-badge:   6;
 }
 
-* { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
-body { 
-  background: var(--bg); 
-  font-family: Arial, Helvetica, sans-serif; 
-  color: var(--text-dark); 
-  -webkit-font-smoothing: antialiased; 
-  -webkit-tap-highlight-color: transparent; 
-}
-img { max-width: 100%; display: block; }
-
-.page { 
-  width: 100%; 
-  max-width: 720px; 
-  min-height: 100vh; 
-  margin: 0 auto; 
-  position: relative; 
-  overflow-x: hidden; 
-  background: var(--bg); 
+/* ============================================================
+   2. RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Hero */
-.hero { position: relative; height: clamp(280px, 45vw, 360px); width: 100%; overflow: hidden; }
-.hero-image { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+html {
+  scroll-behavior: smooth;
+}
 
-/* Nome sobre a imagem */
-.name-block { position: absolute; left: 8%; top: 20%; z-index: 3; }
+body {
+  background: var(--bg);
+  font-family: Arial, Helvetica, sans-serif;
+  color: var(--text-dark);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* ============================================================
+   3. CONTAINER DA PÁGINA
+   ============================================================ */
+.page {
+  width: 100%;
+  max-width: 720px;
+  min-height: 100vh;
+  margin: 0 auto;
+  position: relative;
+  overflow-x: hidden;
+  background: var(--bg);
+}
+
+/* ============================================================
+   4. HERO (IMAGEM DO TOPO)
+   ============================================================ */
+.hero {
+  position: relative;
+  height: clamp(280px, 45vw, 360px);
+  width: 100%;
+  overflow: hidden;
+}
+
+.hero-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  animation: kenBurns 12s var(--ease-out) both;
+  will-change: transform;
+}
+
+/* ============================================================
+   5. NOME SOBRE A IMAGEM
+   ============================================================ */
+.name-block {
+  position: absolute;
+  left: 8%;
+  top: 20%;
+  z-index: var(--z-name);
+  animation: slideInLeft 0.7s var(--ease-out) 0.15s both;
+}
+
 .name-top {
-  color: var(--white); font-size: clamp(34px, 8vw, 62px); font-weight: 900; font-style: italic;
-  line-height: 0.9; text-transform: uppercase; text-shadow: 0 3px 6px rgba(0,0,0,0.4); margin-bottom: 8px;
+  color: var(--white);
+  font-size: clamp(34px, 8vw, 62px);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 0.9;
+  text-transform: uppercase;
+  text-shadow: var(--shadow-name);
+  margin-bottom: 8px;
 }
+
 .name-pill {
-  display: inline-block; padding: 8px 24px; border-radius: 999px; background: var(--orange); color: var(--white);
-  font-size: clamp(28px, 7vw, 52px); font-weight: 900; font-style: italic; line-height: 1;
-  text-transform: uppercase; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  display: inline-block;
+  padding: 8px 24px;
+  border-radius: var(--radius-pill);
+  background: var(--orange);
+  color: var(--white);
+  font-size: clamp(28px, 7vw, 52px);
+  font-weight: 900;
+  font-style: italic;
+  line-height: 1;
+  text-transform: uppercase;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.20);
 }
 
-/* Avatar Sobreposto */
-.avatar-wrapper { position: relative; z-index: 5; margin-top: -70px; display: flex; justify-content: center; }
+/* ============================================================
+   6. AVATAR SOBREPOSTO (MAIOR + MAIS ALTO + ANEL DUPLO)
+   ============================================================ */
+.avatar-wrapper {
+  position: relative;
+  z-index: var(--z-avatar);
+  margin-top: -88px; /* subiu de -70 → -88 */
+  display: flex;
+  justify-content: center;
+  animation: popIn 0.7s var(--ease-back) 0.35s both;
+}
+
 .profile-photo {
-  width: clamp(140px, 30vw, 190px); aspect-ratio: 1; border-radius: 50%; border: 7px solid var(--orange);
-  object-fit: cover; box-shadow: 0 8px 24px rgba(0,0,0,0.15); background: var(--white);
+  width: clamp(155px, 32vw, 200px); /* cresceu de 140–190 → 155–200 */
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 7px solid var(--orange);
+  object-fit: cover;
+  background: var(--white);
+  box-shadow: var(--shadow-avatar);
+  transition: transform var(--t-med) var(--ease-back);
 }
 
-/* Área de Links */
-.links-area { padding: 30px 5% 40px; position: relative; z-index: 2; }
+@media (hover: hover) and (pointer: fine) {
+  .profile-photo:hover {
+    transform: scale(1.03) rotate(-1deg);
+  }
+}
 
-/* Featured Wrapper */
-.featured-wrapper { position: relative; margin-bottom: 30px; padding-top: 20px; }
+/* ============================================================
+   7. ÁREA DE LINKS
+   ============================================================ */
+.links-area {
+  padding: 26px 5% 40px;
+  position: relative;
+  z-index: var(--z-content);
+}
+
+/* Stagger animation nos filhos diretos */
+.links-area > * {
+  animation: fadeUp var(--t-slow) var(--ease-out) both;
+  animation-delay: calc(var(--i, 0) * 90ms + 300ms);
+}
+.links-area > *:nth-child(1) { --i: 0; }
+.links-area > *:nth-child(2) { --i: 1; }
+.links-area > *:nth-child(3) { --i: 2; }
+.links-area > *:nth-child(4) { --i: 3; }
+.links-area > *:nth-child(5) { --i: 4; }
+.links-area > *:nth-child(6) { --i: 5; }
+.links-area > *:nth-child(7) { --i: 6; }
+.links-area > *:nth-child(8) { --i: 7; }
+
+/* ============================================================
+   8. FEATURED WRAPPER + BADGE "MAIS ESCOLHIDO"
+   ============================================================ */
+.featured-wrapper {
+  position: relative;
+  margin-bottom: 22px;
+  padding-top: 18px;
+}
+
 .featured-badge {
-  position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--white);
-  color: var(--orange-dark); padding: 8px 22px; border-radius: 999px; font-size: 13px; font-weight: 900;
-  text-transform: uppercase; box-shadow: 0 3px 12px rgba(0,0,0,0.12); z-index: 3; letter-spacing: 0.5px;
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--white);
+  color: var(--orange-dark);
+  padding: 8px 22px;
+  border-radius: var(--radius-pill);
+  font-size: 13px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: var(--shadow-badge);
+  z-index: var(--z-badge);
+  animation: badgePulse 2.6s var(--ease-out) 1.2s infinite;
 }
 
-/* Cards Base */
+/* ============================================================
+   9. CARDS BASE (MAIS COMPACTOS)
+   ============================================================ */
 .link-card {
-  width: 100%; display: flex; align-items: center; gap: 18px; padding: 20px 24px; margin-bottom: 22px;
-  border-radius: 72px; background: linear-gradient(105deg, var(--orange-light) 0%, var(--orange) 50%, var(--orange-dark) 100%);
-  color: var(--white); border: none; cursor: pointer; box-shadow: 0 8px 20px var(--shadow), 0 0 25px rgba(255,154,72,0.20);
-  transition: transform 180ms ease, filter 180ms ease; font-family: inherit;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 16px 22px;
+  margin-bottom: 16px;
+  border-radius: var(--radius-card);
+  background: var(--gradient-orange);
+  color: var(--white);
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  box-shadow: var(--shadow-card);
+  transition:
+    transform var(--t-fast) var(--ease-out),
+    box-shadow var(--t-fast) var(--ease-out),
+    filter var(--t-fast) var(--ease-out);
 }
-.link-card:disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(0.2); }
-.link-card:not(:disabled):hover { transform: translateY(-3px); filter: brightness(1.05); }
-.link-card:not(:disabled):active { transform: scale(0.985); }
 
-.featured-card { min-height: 120px; padding: 24px 26px; }
+.link-card:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.2);
+}
 
-/* Card Icon (Ajustado para Imagens) */
+.link-card:not(:disabled):active {
+  transform: scale(0.985);
+}
+
+.link-card:focus-visible {
+  outline: 3px solid var(--orange-dark);
+  outline-offset: 4px;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .link-card:not(:disabled):hover {
+    transform: translateY(-3px) scale(1.008);
+    box-shadow: var(--shadow-card-hover);
+    filter: brightness(1.05);
+  }
+  .link-card:not(:disabled):hover .card-icon {
+    transform: rotate(-8deg) scale(1.08);
+  }
+}
+
+/* ============================================================
+   10. CARD DESTAQUE (FEATURED)
+   ============================================================ */
+.featured-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 96px; /* reduzido de 120 → 96 */
+  padding: 18px 24px;
+}
+
+.featured-card::after {
+  content: "";
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 55%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.35) 50%,
+    transparent 100%);
+  transform: translateX(-150%) skewX(-18deg);
+  animation: shimmer 4.2s var(--ease-out) 1.6s infinite;
+  pointer-events: none;
+  will-change: transform;
+}
+
+/* ============================================================
+   11. ÍCONE DO CARD (SUPORTA SVG E IMG)
+   ============================================================ */
 .card-icon {
-  flex: 0 0 60px; width: 60px; height: 60px; border-radius: 50%; background: var(--white);
-  display: grid; place-items: center; box-shadow: 0 3px 10px rgba(0,0,0,0.1); overflow: hidden;
+  flex: 0 0 54px; /* reduzido de 60 → 54 */
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--white);
+  display: grid;
+  place-items: center;
+  box-shadow: 0 4px 10px rgba(232, 74, 28, 0.18);
+  overflow: hidden;
+  transition: transform var(--t-med) var(--ease-back);
 }
+
+/* SVG inline (novo padrão) */
+.card-icon svg {
+  width: 72%;
+  height: 72%;
+  display: block;
+}
+
+/* Compatibilidade: caso ainda use <img> em algum card */
 .card-icon img {
-  width: 65%; height: 65%; object-fit: contain;
+  width: 65%;
+  height: 65%;
+  object-fit: contain;
 }
 
-/* Card Content */
-.card-content { flex: 1; display: flex; flex-direction: column; gap: 4px; }
-.card-price { font-size: clamp(18px, 4.5vw, 24px); font-weight: 900; line-height: 1.1; text-align: center; text-transform: uppercase; }
-.card-coupon { font-size: clamp(13px, 3.5vw, 16px); font-weight: 700; opacity: 0.95; text-align: center; letter-spacing: 0.5px; }
-.card-label { flex: 1; font-size: clamp(17px, 4.2vw, 22px); font-weight: 800; text-align: center; line-height: 1.2; }
+/* ============================================================
+   12. CONTEÚDO DO CARD
+   ============================================================ */
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-/* Footer */
-.footer { text-align: center; padding: 20px 20px 40px; color: #999; font-size: 13px; position: relative; z-index: 5; }
+.card-price {
+  font-size: clamp(18px, 4.5vw, 24px);
+  font-weight: 900;
+  line-height: 1.1;
+  text-align: center;
+  text-transform: uppercase;
+}
 
-/* Decorações */
-.decorations { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
-.decoration { position: absolute; opacity: 0.12; color: #E9B87E; }
-.crown { width: 120px; height: 120px; }
-.heart { width: 100px; height: 100px; }
+.card-coupon {
+  font-size: clamp(13px, 3.5vw, 16px);
+  font-weight: 700;
+  opacity: 0.95;
+  text-align: center;
+  letter-spacing: 0.5px;
+}
 
+.card-label {
+  flex: 1;
+  font-size: clamp(17px, 4.2vw, 22px);
+  font-weight: 800;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ============================================================
+   13. FOOTER
+   ============================================================ */
+.footer {
+  text-align: center;
+  padding: 20px 20px 40px;
+  color: var(--text-muted);
+  font-size: 13px;
+  position: relative;
+  z-index: var(--z-avatar);
+}
+
+/* ============================================================
+   14. DECORAÇÕES DE FUNDO
+   ============================================================ */
+.decorations {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: var(--z-decor);
+  overflow: hidden;
+}
+
+.decoration {
+  position: absolute;
+  opacity: 0.12;
+  color: var(--decor);
+}
+
+.crown {
+  width: 120px;
+  height: 120px;
+  top: 25%;
+  right: -20px;
+  animation: float var(--t-ambient) ease-in-out infinite;
+}
+
+.heart {
+  width: 100px;
+  height: 100px;
+  bottom: 10%;
+  left: -10px;
+  animation: float calc(var(--t-ambient) * 1.3) ease-in-out infinite reverse;
+}
+
+/* ============================================================
+   15. RESPONSIVO — TELAS PEQUENAS (≤380px)
+   ============================================================ */
 @media (max-width: 380px) {
-  .links-area { padding-inline: 4%; }
-  .link-card { min-height: 100px; padding-inline: 18px; gap: 14px; }
-  .card-icon { flex-basis: 50px; width: 50px; height: 50px; }
-  .card-label { font-size: 16px; }
-  .profile-photo { border-width: 5px; }
-}
-/* =============================================================
-   ANIMAÇÕES LEVES E DE ALTA PERFORMANCE (GPU ACCELERATED)
-   ============================================================= */
+  .links-area {
+    padding-inline: 4%;
+  }
 
-/* 1. Entrada suave de baixo para cima (para os cards) */
+  .link-card {
+    min-height: 88px;
+    padding-inline: 18px;
+    gap: 12px;
+  }
+
+  .card-icon {
+    flex-basis: 48px;
+    width: 48px;
+    height: 48px;
+  }
+
+  .card-label {
+    font-size: 16px;
+  }
+
+  .card-price {
+    font-size: 17px;
+  }
+
+  .profile-photo {
+    border-width: 5px;
+  }
+
+  .avatar-wrapper {
+    margin-top: -72px; /* proporcional à tela pequena */
+  }
+}
+
+/* ============================================================
+   16. ACESSIBILIDADE — PREFERS-REDUCED-MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .featured-card::after {
+    display: none;
+  }
+
+  .crown,
+  .heart {
+    animation: none;
+  }
+}
+
+/* ============================================================
+   17. KEYFRAMES
+   ============================================================ */
+
+/* Entrada suave de baixo para cima (cards) */
 @keyframes fadeUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
-/* 2. Efeito "Pop" elástico (para o Avatar) */
+/* Deslize lateral (nome) */
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pop elástico (avatar) — sem translateX(-50%) pois o wrapper usa flex */
 @keyframes popIn {
-  0%   { opacity: 0; transform: translateX(-50%) scale(0.8); }
-  60%  { opacity: 1; transform: translateX(-50%) scale(1.05); } /* Leve exagero */
-  100% { opacity: 1; transform: translateX(-50%) scale(1); }
+  0% {
+    opacity: 0;
+    transform: scale(0.6);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
 
-/* 3. Zoom lento e cinematográfico (para a imagem do Hero) */
+/* Zoom cinematográfico (hero) */
 @keyframes kenBurns {
   from { transform: scale(1.08); }
   to   { transform: scale(1); }
 }
 
-/* 4. Flutuação suave e infinita (para as coroas/decorações de fundo) */
+/* Flutuação suave (decorações) */
 @keyframes float {
   0%, 100% { transform: translateY(0) rotate(0deg); }
   50%      { transform: translateY(-12px) rotate(2deg); }
 }
 
-/* 5. Pulso sutil de atenção (para o badge "MAIS ESCOLHIDO") */
+/* Pulso de atenção (badge) */
 @keyframes badgePulse {
-  0%, 100% { transform: translateX(-50%) scale(1); box-shadow: 0 3px 10px rgba(0,0,0,0.12); }
-  50%      { transform: translateX(-50%) scale(1.05); box-shadow: 0 6px 16px rgba(242, 101, 34, 0.3); }
+  0%, 100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow: var(--shadow-badge);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.05);
+    box-shadow: var(--shadow-badge-glow);
+  }
+}
+
+/* Shimmer (card destaque) */
+@keyframes shimmer {
+  0%   { transform: translateX(-150%) skewX(-18deg); }
+  100% { transform: translateX(250%) skewX(-18deg); }
 }
