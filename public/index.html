@@ -2,16 +2,40 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lucy | Links Oficiais</title>
   <meta name="description" content="Conteúdos exclusivos e promoções especiais.">
+  <meta name="theme-color" content="#FFF5EB">
+
+  <!-- Meta tags para compartilhamento social -->
+  <meta property="og:title" content="Lucy | Links Oficiais">
+  <meta property="og:description" content="Conteúdos exclusivos e promoções especiais.">
+  <meta property="og:url" content="https://lucylimaofc.com.br">
+  <meta property="og:type" content="website">
+  <meta name="twitter:card" content="summary_large_image">
+
   <link rel="stylesheet" href="/style.css">
+
+  <!--
+    ✅ FIX P3: Stub do callback do Turnstile definido ANTES do script do
+    Turnstile carregar. Garante que window.onTurnstileSuccess SEMPRE exista
+    quando o widget tentar chamá-lo — mesmo em WebViews com timing imprevisível
+    (Instagram in-app browser).
+
+    Se o Turnstile resolver antes do app.js executar, o token fica guardado
+    em window.__lucyTurnstilePending e o app.js processa ao carregar.
+  -->
+  <script>
+    window.onTurnstileSuccess = function (token) {
+      window.__lucyTurnstilePending = token;
+    };
+  </script>
+
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
   <main class="page">
-    
-    <!-- Hero Section -->
+
     <header class="hero">
       <img src="/imgs/hero-bg.avif" alt="Lucy" class="hero-image" onerror="this.style.background='linear-gradient(135deg, #FF861B, #E94B00)'">
       <div class="name-block">
@@ -20,20 +44,16 @@
       </div>
     </header>
 
-    <!-- Avatar Sobreposto -->
     <div class="avatar-wrapper">
-      <img src="/imgs/avatar.avif" alt="Foto de Perfil" class="profile-photo" onerror="this.style.background='#ddd'">
+      <img src="/imgs/avatar.avif" alt="Foto de Perfil de Lucy" class="profile-photo" onerror="this.style.background='#ddd'">
     </div>
 
-    <!-- Área de Links -->
     <section class="links-area">
-      
-      <!-- Card 1: Destaque (Prévias Grátis - Telegram) -->
+
       <div class="featured-wrapper">
         <div class="featured-badge">MAIS ESCOLHIDO</div>
         <button class="link-card featured-card" data-key="previas-gratis" disabled aria-label="Prévias grátis">
-          <div class="link-icon">
-            <!-- Ícone Telegram (avião de papel) -->
+          <div class="card-icon">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" fill="#E94B00"/>
             </svg>
@@ -45,21 +65,17 @@
         </button>
       </div>
 
-      <!-- Card 2: Privacy Grátis -->
-      <button class="link-card" data-key="privacy-gratis" disabled aria-label="Privacy Grátis">
-        <div class="link-icon">
-          <!-- Ícone Privacy (cadeado) -->
+      <button class="link-card" data-key="privacy-gratis" disabled aria-label="Privacy grátis">
+        <div class="card-icon">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zM12 17c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zM9 8V6c0-1.66 1.34-3 3-3s3 1.34 3 3v2H9z" fill="#E94B00"/>
+            <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z" fill="#E94B00"/>
           </svg>
         </div>
         <span class="card-label">PRIVACY GRÁTIS</span>
       </button>
 
-      <!-- Card 3: Privacy VIP -->
       <button class="link-card" data-key="privacy-vip" disabled aria-label="Privacy VIP">
-        <div class="link-icon">
-          <!-- Ícone VIP (coroa/estrela) -->
+        <div class="card-icon">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="#E94B00"/>
           </svg>
@@ -67,21 +83,17 @@
         <span class="card-label">PRIVACY VIP</span>
       </button>
 
-      <!-- Card 4: Telegram VIP -->
       <button class="link-card" data-key="telegram-vip" disabled aria-label="Telegram VIP">
-        <div class="link-icon">
-          <!-- Ícone Telegram Bot (robô/engrenagem) -->
+        <div class="card-icon">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="#E94B00"/>
+            <path d="M12 8a4 4 0 100 8 4 4 0 000-8zm8.94 3A9 9 0 0012 3.06V1h-1v2.06A9 9 0 003.06 11H1v1h2.06A9 9 0 0011 20.94V23h1v-2.06A9 9 0 0020.94 12H23v-1h-2.06zM12 19a7 7 0 110-14 7 7 0 010 14z" fill="#E94B00"/>
           </svg>
         </div>
         <span class="card-label">TELEGRAM VIP</span>
       </button>
 
-      <!-- Card 5: Contos Exclusivos -->
-      <button class="link-card" data-key="contos-exclusivos" disabled aria-label="Contos Exclusivos">
-        <div class="link-icon">
-          <!-- Ícone Contos (livro aberto) -->
+      <button class="link-card" data-key="contos-exclusivos" disabled aria-label="Contos exclusivos">
+        <div class="card-icon">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM6 4h5v8l-2.5-1.5L6 12V4z" fill="#E94B00"/>
           </svg>
@@ -89,33 +101,35 @@
         <span class="card-label">CONTOS EXCLUSIVOS</span>
       </button>
 
-      <!-- HONEYPOT (Isca para bots - invisível) -->
       <button class="link-card honeypot" data-key="admin-883" disabled tabindex="-1" aria-hidden="true" style="position:absolute; opacity:0; pointer-events:none; height:1px;">
         <span>ADMIN</span>
       </button>
 
-      <!-- Verificação Turnstile -->
       <div id="verification-container" style="margin-top: 30px; display: flex; justify-content: center;">
-        <div class="cf-turnstile" 
-             data-sitekey="0x4AAAAAAFRzUH_VDaTuVUZl" 
-             data-callback="onTurnstileSuccess" 
+        <div class="cf-turnstile"
+             data-sitekey="0x4AAAAAAFRzUH_VDaTuVUZl"
+             data-callback="onTurnstileSuccess"
              data-theme="light">
         </div>
       </div>
 
-      <p id="status-msg" style="text-align: center; color: #E94B00; font-size: 14px; margin-top: 15px; font-weight: 600; opacity: 0; transition: opacity 0.3s;"></p>
+      <p id="status-msg" style="text-align:center; margin-top:15px; font-size:14px; opacity:0; transition: opacity .3s ease;"></p>
+
     </section>
 
-    <!-- Footer -->
     <footer class="footer">
       <p>© 2026 Lucy. Todos os direitos reservados.</p>
     </footer>
 
-    <!-- Decorações de Fundo -->
     <div class="decorations">
-      <svg class="decoration crown" style="top: 25%; right: -20px;" viewBox="0 0 100 100" fill="currentColor"><path d="M10,70 L25,30 L40,60 L50,20 L60,60 L75,30 L90,70 Z"/></svg>
-      <svg class="decoration heart" style="bottom: 10%; left: -10px;" viewBox="0 0 100 100" fill="currentColor"><path d="M50,85 C20,60 5,40 5,25 C5,10 20,5 35,5 C42,5 50,10 50,10 C50,10 58,5 65,5 C80,5 95,10 95,25 C95,40 80,60 50,85 Z"/></svg>
+      <svg class="decoration crown" style="top: 25%; right: -20px;" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M10,70 L25,30 L40,60 L50,20 L60,60 L75,30 L90,70 Z"/>
+      </svg>
+      <svg class="decoration heart" style="bottom: 10%; left: -10px;" viewBox="0 0 100 100" fill="currentColor">
+        <path d="M50,85 C20,60 5,40 5,25 C5,10 20,5 35,5 C42,5 50,10 50,10 C50,10 58,5 65,5 C80,5 95,10 95,25 C95,40 80,60 50,85 Z"/>
+      </svg>
     </div>
+
   </main>
 
   <script src="/app.js" defer></script>
