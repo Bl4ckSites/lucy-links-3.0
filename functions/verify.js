@@ -1,7 +1,12 @@
-const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+/* ============================================================
+   functions/verify.js — POST /verify
+   Valida token do Turnstile, cria sessão no KV, retorna cookie
+   + fallback_token no body.
+   Correções: SameSite=None (P4) + fallback_token.
+   ============================================================ */
 
-// SESSÃO DE 10 MINUTOS (600 segundos)
-const SESSION_TTL_SECONDS = 600;
+const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
+const SESSION_TTL_SECONDS = 600; // 10 minutos
 const TURNSTILE_TIMEOUT_MS = 3000;
 
 function jsonResponse(body, status, extraHeaders = {}) {
@@ -17,74 +22,90 @@ function jsonResponse(body, status, extraHeaders = {}) {
 
 export async function onRequestPost(context) {
   const { request, env } = context;
-  const ip = request.headers.get('CF-Connecting-IP') || 'unknown';
 
+  // ---------- Configuração ----------
   if (!env.TURNSTILE_SECRET || !env.SECURITY_KV) {
-    return jsonResponse({ success: false, error: 'server_misconfigured' }, 500);
+    return jsonResponse({ ok: false, error: 'server_not_configured' }, 500);
   }
 
-  let token;
+  // ---------- Parse do body ----------
+  let body;
   try {
-    const body = await request.json();
-    token = body?.token;
-  } catch {
-    return jsonResponse({ success: false, error: 'invalid_body' }, 400);
+    body = await request.json();
+  } catch (e) {
+    return jsonResponse({ ok: false, error: 'invalid_json' }, 400);
   }
 
-  if (!token || typeof token !== 'string' || token.length > 4096) {
-    return jsonResponse({ success: false, error: 'missing_token' }, 400);
+  const token = body && body.token;
+
+  // ---------- Validação do token ----------
+  if (typeof token !== 'string' || token.length === 0 || token.length > 4096) {
+    return jsonResponse({ ok: false, error: 'invalid_token' }, 400);
   }
 
-  let data;
+  // ---------- Valida com a API do Turnstile (com timeout) ----------
+  const clientIp = request.headers.get('CF-Connecting-IP') || '';
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), TURNSTILE_TIMEOUT_MS);
+
+  let turnstileData;
   try {
-    const formData = new FormData();
-    formData.append('secret', env.TURNSTILE_SECRET);
-    formData.append('response', token);
-    if (ip !== 'unknown') formData.append('remoteip', ip);
+    const form = new FormData();
+    form.append('secret', env.TURNSTILE_SECRET);
+    form.append('response', token);
+    if (clientIp) form.append('remoteip', clientIp);
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), TURNSTILE_TIMEOUT_MS);
-
-    const verifyRes = await fetch(TURNSTILE_VERIFY_URL, {
+    const res = await fetch(TURNSTILE_VERIFY_URL, {
       method: 'POST',
-      body: formData,
+      body: form,
       signal: controller.signal
     });
-
+    turnstileData = await res.json();
+  } catch (e) {
     clearTimeout(timeoutId);
-    data = await verifyRes.json();
-  } catch (err) {
-    const isAbort = err?.name === 'AbortError';
-    console.error('turnstile_verify_failed', isAbort ? 'timeout' : err?.message);
-    return jsonResponse(
-      { success: false, error: isAbort ? 'verify_timeout' : 'verify_unavailable' },
-      503
-    );
+    return jsonResponse({ ok: false, error: 'turnstile_unreachable' }, 503);
+  } finally {
+    clearTimeout(timeoutId);
   }
 
-  if (!data || data.success !== true) {
-    return jsonResponse({ success: false, error: 'invalid_token', codes: data?.['error-codes'] || [] }, 403);
+  if (!turnstileData || !turnstileData.success) {
+    return jsonResponse({ ok: false, error: 'turnstile_failed' }, 403);
   }
 
-  try {
-    const sessionToken = crypto.randomUUID();
-    const now = Math.floor(Date.now() / 1000);
+  // ---------- Gera sessão + fallback token ----------
+  const sessionId = crypto.randomUUID();
+  const fallbackToken = crypto.randomUUID();
 
-    await env.SECURITY_KV.put(
-      `session:${sessionToken}`,
-      JSON.stringify({ ip, createdAt: now, expiresAt: now + SESSION_TTL_SECONDS }),
-      { expirationTtl: SESSION_TTL_SECONDS }
-    );
+  await env.SECURITY_KV.put(
+    `session:${sessionId}`,
+    JSON.stringify({ ip: clientIp, ts: Date.now() }),
+    { expirationTtl: SESSION_TTL_SECONDS }
+  );
 
-    return jsonResponse(
-      { success: true, expiresIn: SESSION_TTL_SECONDS },
-      200,
-      {
-        'Set-Cookie': `lucy_session=${sessionToken}; HttpOnly; Secure; SameSite=Lax; Max-Age=${SESSION_TTL_SECONDS}; Path=/`
-      }
-    );
-  } catch (err) {
-    console.error('session_store_failed', err?.message);
-    return jsonResponse({ success: false, error: 'session_error' }, 500);
-  }
+  await env.SECURITY_KV.put(
+    `token:${fallbackToken}`,
+    JSON.stringify({ ip: clientIp, sessionId, ts: Date.now() }),
+    { expirationTtl: SESSION_TTL_SECONDS }
+  );
+
+  /* ============================================================
+     ✅ FIX P4 — SameSite=None; Secure
+     Alguns WebViews (Instagram iOS especialmente) tratam o contexto
+     de fetch em link-in-app como "cross-site" e DESCARTAM cookies
+     SameSite=Lax. SameSite=None é aceito nesses casos. Obrigatório
+     o atributo Secure (já presente).
+     ============================================================ */
+  const setCookie =
+    `lucy_session=${sessionId}; ` +
+    `HttpOnly; ` +
+    `Secure; ` +
+    `SameSite=None; ` +
+    `Max-Age=${SESSION_TTL_SECONDS}; ` +
+    `Path=/`;
+
+  return jsonResponse(
+    { ok: true, fallback_token: fallbackToken },
+    200,
+    { 'Set-Cookie': setCookie }
+  );
 }
