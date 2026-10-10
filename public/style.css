@@ -1,10 +1,9 @@
 /* =============================================================
-   LUCY LINKS — style.css (v3 - Premium Polish + Discount Badges)
+   LUCY LINKS — style.css (v4 - PNG Icons)
    - Avatar maior e mais alto (destaque)
-   - Cards mais compactos (mais conteúdo visível)
-   - Badges de desconto centralizados e flutuantes
+   - Cards compactos com badges de desconto
+   - Ícones PNG externos (public/imgs/)
    - Status message em pílula centralizada
-   - Sem inline styles (migrados para cá)
    - Compatível com WebView do Instagram
    ============================================================= */
 
@@ -171,19 +170,19 @@ button {
 }
 
 /* ============================================================
-   6. AVATAR SOBREPOSTO (MAIOR + MAIS ALTO + ANEL DUPLO)
+   6. AVATAR SOBREPOSTO
    ============================================================ */
 .avatar-wrapper {
   position: relative;
   z-index: var(--z-avatar);
-  margin-top: -88px; /* subiu de -70 → -88 */
+  margin-top: -88px;
   display: flex;
   justify-content: center;
   animation: popIn 0.7s var(--ease-back) 0.35s both;
 }
 
 .profile-photo {
-  width: clamp(155px, 32vw, 200px); /* cresceu de 140–190 → 155–200 */
+  width: clamp(155px, 32vw, 200px);
   aspect-ratio: 1;
   border-radius: 50%;
   border: 7px solid var(--orange);
@@ -251,7 +250,7 @@ button {
 }
 
 /* ============================================================
-   9. CARD WRAPPER + BADGE DE DESCONTO (NOVO)
+   9. CARD WRAPPER + BADGE DE DESCONTO
    ============================================================ */
 .card-wrapper {
   position: relative;
@@ -286,7 +285,7 @@ button {
   pointer-events: none;
 }
 
-/* Variação: 50% OFF mais chamativo (dourado) */
+/* Variação: 50% OFF dourado (Fatal Fans) */
 .card-wrapper:has(.link-card[data-key="fatal-fans"]) .discount-badge {
   background: linear-gradient(135deg, #FFD166 0%, #FF9A2E 100%);
   color: #7A2A00;
@@ -296,7 +295,7 @@ button {
 }
 
 /* ============================================================
-   10. CARDS BASE (MAIS COMPACTOS)
+   10. CARDS BASE
    ============================================================ */
 .link-card {
   width: 100%;
@@ -350,7 +349,7 @@ button {
 .featured-card {
   position: relative;
   overflow: hidden;
-  min-height: 96px; /* reduzido de 120 → 96 */
+  min-height: 96px;
   padding: 18px 24px;
 }
 
@@ -370,10 +369,10 @@ button {
 }
 
 /* ============================================================
-   12. ÍCONE DO CARD (SUPORTA SVG E IMG)
+   12. ÍCONE DO CARD (PNG em public/imgs/)
    ============================================================ */
 .card-icon {
-  flex: 0 0 54px; /* reduzido de 60 → 54 */
+  flex: 0 0 54px;
   width: 54px;
   height: 54px;
   border-radius: 50%;
@@ -385,18 +384,17 @@ button {
   transition: transform var(--t-med) var(--ease-back);
 }
 
-/* SVG inline (novo padrão) */
-.card-icon svg {
+.card-icon img {
+  display: block;
   width: 72%;
   height: 72%;
-  display: block;
-}
-
-/* Compatibilidade: caso ainda use <img> em algum card */
-.card-icon img {
-  width: 65%;
-  height: 65%;
   object-fit: contain;
+  /* Evita seleção/arraste acidental em mobile */
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-user-select: none;
+  /* Suaviza renderização em telas retina */
+  image-rendering: -webkit-optimize-contrast;
 }
 
 /* ============================================================
@@ -539,6 +537,11 @@ button {
     height: 48px;
   }
 
+  .card-icon img {
+    width: 76%;
+    height: 76%;
+  }
+
   .card-label {
     font-size: 16px;
   }
@@ -552,7 +555,7 @@ button {
   }
 
   .avatar-wrapper {
-    margin-top: -72px; /* proporcional à tela pequena */
+    margin-top: -72px;
   }
 
   .discount-badge {
@@ -622,7 +625,7 @@ button {
   }
 }
 
-/* Pop elástico (avatar) — sem translateX(-50%) pois o wrapper usa flex */
+/* Pop elástico (avatar) */
 @keyframes popIn {
   0% {
     opacity: 0;
