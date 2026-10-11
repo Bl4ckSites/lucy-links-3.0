@@ -11,7 +11,7 @@
 const LINKS = {
   "previas-gratis": "https://t.me/+PpgYUi67ciNiYzU5",
   "privacy-vip":    "https://privacy.com.br/@Lucysafadinha",
-  "fatal-fans":     "https://fatalfans.com/@Lucy",   // ⚠️ SUBSTITUIR PELA URL REAL
+  "fatal-fans":     "https://fatalfans.com/lucysafadinha",   // ⚠️ SUBSTITUIR PELA URL REAL
   "telegram-vip":   "https://t.me/Lucydopriv_bot"
 };
 
