@@ -1,13 +1,10 @@
-/* ============================================================
-   functions/verify.js — POST /verify
-   Valida token do Turnstile, cria sessão no KV, retorna cookie
-   + fallback_token no body.
-   Correções: SameSite=None (P4) + fallback_token.
-   ============================================================ */
-
 const TURNSTILE_VERIFY_URL = 'https://challenges.cloudflare.com/turnstile/v0/siteverify';
 const SESSION_TTL_SECONDS = 600; // 10 minutos
 const TURNSTILE_TIMEOUT_MS = 3000;
+
+// 🔐 Chave secreta para assinar cookies (use uma string aleatória de 32+ chars)
+// Adicione como variável secreta: wrangler secret put COOKIE_SECRET
+const COOKIE_SECRET = 'sua-chave-secreta-aqui-mude-isso';
 
 function jsonResponse(body, status, extraHeaders = {}) {
   return new Response(JSON.stringify(body), {
@@ -20,11 +17,22 @@ function jsonResponse(body, status, extraHeaders = {}) {
   });
 }
 
+// Função simples de hash (para produção use algo mais seguro)
+function simpleHash(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash;
+  }
+  return Math.abs(hash).toString(16);
+}
+
 export async function onRequestPost(context) {
   const { request, env } = context;
 
   // ---------- Configuração ----------
-  if (!env.TURNSTILE_SECRET || !env.SECURITY_KV) {
+  if (!env.TURNSTILE_SECRET) {
     return jsonResponse({ ok: false, error: 'server_not_configured' }, 500);
   }
 
@@ -72,39 +80,28 @@ export async function onRequestPost(context) {
     return jsonResponse({ ok: false, error: 'turnstile_failed' }, 403);
   }
 
-  // ---------- Gera sessão + fallback token ----------
+  // ---------- Gera cookie assinado (SEM KV) ----------
   const sessionId = crypto.randomUUID();
-  const fallbackToken = crypto.randomUUID();
-
-  await env.SECURITY_KV.put(
-    `session:${sessionId}`,
-    JSON.stringify({ ip: clientIp, ts: Date.now() }),
-    { expirationTtl: SESSION_TTL_SECONDS }
-  );
-
-  await env.SECURITY_KV.put(
-    `token:${fallbackToken}`,
-    JSON.stringify({ ip: clientIp, sessionId, ts: Date.now() }),
-    { expirationTtl: SESSION_TTL_SECONDS }
-  );
+  const timestamp = Date.now();
+  
+  // Cria assinatura simples
+  const signature = simpleHash(`${sessionId}:${timestamp}:${COOKIE_SECRET}`);
+  const cookieValue = `${sessionId}:${timestamp}:${signature}`;
 
   /* ============================================================
      ✅ FIX P4 — SameSite=None; Secure
-     Alguns WebViews (Instagram iOS especialmente) tratam o contexto
-     de fetch em link-in-app como "cross-site" e DESCARTAM cookies
-     SameSite=Lax. SameSite=None é aceito nesses casos. Obrigatório
-     o atributo Secure (já presente).
      ============================================================ */
   const setCookie =
-    `lucy_session=${sessionId}; ` +
+    `lucy_session=${cookieValue}; ` +
     `HttpOnly; ` +
     `Secure; ` +
     `SameSite=None; ` +
     `Max-Age=${SESSION_TTL_SECONDS}; ` +
     `Path=/`;
 
+  // ✅ SEM OPERAÇÕES PUT NO KV!
   return jsonResponse(
-    { ok: true, fallback_token: fallbackToken },
+    { ok: true },
     200,
     { 'Set-Cookie': setCookie }
   );
