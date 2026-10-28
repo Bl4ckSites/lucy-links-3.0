@@ -69,7 +69,7 @@ export async function onRequestGet(context) {
 
   const target = LINKS[key];
   if (!target) {
-    console.log('❌ Link inválido:', key);
+    console.log(' Link inválido:', key);
     return text('Link inválido.', 404);
   }
 
@@ -82,7 +82,7 @@ export async function onRequestGet(context) {
   // Pega fallback token via query param (?t=)
   const queryToken = url.searchParams.get('t');
 
-  console.log('🔍 Validando acesso:', {
+  console.log(' Validando acesso:', {
     key,
     ip: clientIp,
     hasSessionCookie: !!sessionCookie,
@@ -95,7 +95,7 @@ export async function onRequestGet(context) {
   const isValid = validateSession(sessionCookie || fallbackCookie, queryToken);
 
   if (!isValid) {
-    console.log(' Acesso negado - sem sessão válida');
+    console.log('❌ Acesso negado - sem sessão válida');
     return text('Sessão expirada. Recarregue a página.', 403);
   }
 
